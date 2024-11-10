@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const Task = require("../models/TaskModel");
 
 const createTask = async (req, res) => {
@@ -28,7 +29,37 @@ const getTasks = async (req, res) => {
   }
 };
 
+const updateTask = async (req, res) => {
+  try {
+    console.log(req.body);
+    const task = await Task.findOneAndUpdate(
+      {
+        _id: new mongoose.Types.ObjectId(req.body.id),
+        createdBy: new mongoose.Types.ObjectId(req?.user_id),
+      },
+      req.body,
+      { new: true }
+    );
+
+    if (!task) {
+      res.status(500).send({
+        success: false,
+        message: "Task Not found",
+      });
+    }
+    res.json(task);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Update Task API",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTask,
   getTasks,
+  updateTask,
 };
