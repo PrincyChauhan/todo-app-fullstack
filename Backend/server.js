@@ -8,6 +8,8 @@ const app = express();
 
 app.use(express.json());
 
+app.use("/api/v1/task", require("./routes/TaskRoute"));
+
 app.get("/", (req, res) => {
   res.send("Hello World");
 });
