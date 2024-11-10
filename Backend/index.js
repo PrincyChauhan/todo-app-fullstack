@@ -10,6 +10,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use(
+  cors({
+    origin: "https://todo-app-fullstack-indol.vercel.app/",
+  })
+);
+
 app.use("/api/v1/task", require("./routes/TaskRoute"));
 app.use("/api/v1/user", require("./routes/UserRoute"));
 
