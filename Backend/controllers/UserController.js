@@ -5,16 +5,15 @@ const JWT = require("jsonwebtoken");
 const registerController = async (req, res) => {
   try {
     const { userName, password, email } = req.body;
-    console.log("userName: ", userName, password, email);
     if (!userName || !password || !email) {
-      return res.status(500).send({
+      return res.status(400).send({
         success: false,
         message: "Please fill User name, email and password fields ",
       });
     }
     const existingUser = await userModel.findOne({ email: email });
     if (existingUser) {
-      return res.status(500).send({
+      return res.status(400).send({
         success: false,
         message: "Email already exists",
       });
@@ -72,7 +71,7 @@ const loginController = async (req, res) => {
     );
     user.password = undefined;
     res.status(200).send({
-      sucess: true,
+      success: true,
       message: "Login success",
       token,
       user,

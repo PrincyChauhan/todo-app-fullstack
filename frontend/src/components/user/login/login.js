@@ -1,13 +1,33 @@
-import { Typography } from "antd";
+import { message, Typography } from "antd";
 import { Form, Input, Button } from "antd";
 import { Row, Col, Image } from "antd";
 import "./login.scss";
 import * as EmailValidator from "email-validator";
 import loginImage from "../../../assets/login.svg";
+import axios from "axios";
 
 const { Title } = Typography;
-const Login = () => {
+const Login = ({ setUserStep }) => {
   const [form] = Form.useForm();
+
+  const handleSubmit = async (values) => {
+    try {
+      const payload = values;
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}user/login`,
+        payload
+      );
+      console.log("response: ", response?.data);
+      if (response?.data?.success) {
+        message.success(response?.data?.message);
+        localStorage.setItem("token", response?.data?.token);
+      } else {
+        message.error(response?.data?.message);
+      }
+    } catch (error) {
+      message.error(error?.response?.data?.message || "Something went wrong");
+    }
+  };
   return (
     <>
       <div className="loginContainer">
@@ -23,10 +43,11 @@ const Login = () => {
               //Triggered When Form Submitted
               onFinish={(values) => {
                 // LOGIN API INTEGRATION
+                handleSubmit(values);
               }}
             >
               <Form.Item
-                name="Email"
+                name="email"
                 label="Email Address:"
                 rules={[
                   {
@@ -86,7 +107,7 @@ const Login = () => {
             <Row>
               <Col span={24} offset={10} className="navigateCol">
                 Don't have an Account
-                <span>SignUp</span>
+                <span onClick={() => setUserStep(2)}>SignUp</span>
               </Col>
             </Row>
           </Col>
