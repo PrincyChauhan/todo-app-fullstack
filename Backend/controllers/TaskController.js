@@ -14,6 +14,21 @@ const createTask = async (req, res) => {
   }
 };
 
+const getTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find({ createdBy: req?.user_id });
+    res.json(tasks);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Get Tasks API",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTask,
+  getTasks,
 };
