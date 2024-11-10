@@ -6,7 +6,7 @@ import * as EmailValidator from "email-validator";
 import loginImage from "../../../assets/login.svg";
 import axios from "axios";
 import { useNavigate } from "react-router";
-import { generateTaskPattern, taskPattern } from "../../../Routes";
+import { taskPattern } from "../../../Routes";
 
 const { Title } = Typography;
 const Login = ({ setUserStep }) => {
