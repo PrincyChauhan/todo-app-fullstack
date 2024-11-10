@@ -4,7 +4,7 @@ const Task = require("../models/TaskModel");
 const createTask = async (req, res) => {
   try {
     const task = await Task.create({ ...req.body, createdBy: req?.user_id });
-    res.status(201).json(task);
+    return res.status(201).json(task);
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -18,7 +18,16 @@ const createTask = async (req, res) => {
 const getTasks = async (req, res) => {
   try {
     const tasks = await Task.find({ createdBy: req?.user_id });
-    res.json(tasks);
+    if (!tasks?.length) {
+      res.status(500).send({
+        success: false,
+        message: "Task Not found",
+      });
+    }
+    return res.status(200).send({
+      success: true,
+      tasks,
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -42,12 +51,15 @@ const updateTask = async (req, res) => {
     );
 
     if (!task) {
-      res.status(500).send({
+      return res.status(500).send({
         success: false,
         message: "Task Not found",
       });
     }
-    res.json(task);
+    return res.status(200).send({
+      success: true,
+      message: "Task Updated",
+    });
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -58,8 +70,39 @@ const updateTask = async (req, res) => {
   }
 };
 
+const deleteTask = async (req, res) => {
+  try {
+    const task = await Task.findOne({
+      _id: new mongoose.Types.ObjectId(req.params.id),
+      createdBy: new mongoose.Types.ObjectId(req?.user_id),
+    });
+    if (!task) {
+      return res.status(500).send({
+        success: false,
+        message: "Task Not found",
+      });
+    }
+    await Task.findOneAndDelete({
+      _id: new mongoose.Types.ObjectId(req.params.id),
+      createdBy: new mongoose.Types.ObjectId(req?.user_id),
+    });
+    return res.status(200).send({
+      success: true,
+      message: "Task Deleted",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      success: false,
+      message: "Error in Delete Task API",
+      error,
+    });
+  }
+};
+
 module.exports = {
   createTask,
   getTasks,
   updateTask,
+  deleteTask,
 };
