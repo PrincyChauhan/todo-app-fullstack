@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/v1/task", require("./routes/TaskRoute"));
+app.use("/api/v1/user", require("./routes/UserRoute"));
 
 app.get("/", (req, res) => {
   res.send("Hello World");
