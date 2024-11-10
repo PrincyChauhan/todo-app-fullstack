@@ -51,7 +51,7 @@ const Login = ({ setUserStep }) => {
             >
               <Form.Item
                 name="email"
-                label="Email Address:"
+                label="Email Address: "
                 rules={[
                   {
                     required: true,
