@@ -1,0 +1,80 @@
+.homeContainer {
+  min-height: 100vh;
+  top: 50px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: url(https://wallpaperaccess.com/full/417644.jpg) no-repeat center
+    center/cover;
+
+  .homeMain {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+  }
+
+  .wishing {
+    margin-bottom: 15px;
+  }
+
+  .actionbar {
+    width: 80vw;
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+
+    .logout {
+      height: 20%;
+      .logoutBtn {
+        border-radius: 10px;
+        background-color: #0091ff;
+        color: #ffff;
+        padding: 10px;
+        border: none;
+        // margin-left: auto !important;
+        float: left;
+
+        &:hover {
+          background-color: #4ab10e;
+          color: #ffff;
+        }
+      }
+    }
+    .newRecord {
+      //   width: 30%;
+      background: none repeat;
+      margin-bottom: 20px;
+      // border: 2px solid green;
+      border-radius: 10px;
+      background-color: none;
+      padding: 10px;
+      text-align: right;
+      float: right;
+      padding: 5px;
+      background-color: #0091ff;
+
+      .addRecord {
+        color: white;
+        font-size: 15px;
+        font-weight: 300;
+      }
+      &:hover {
+        background-color: #4ab10e;
+        color: black;
+      }
+    }
+  }
+  .editRecord {
+    color: #000000;
+  }
+
+  .table {
+    width: 80vw;
+    // height: auto;
+  }
+}

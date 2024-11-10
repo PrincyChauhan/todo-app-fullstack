@@ -4,7 +4,7 @@ const Task = require("../models/TaskModel");
 const createTask = async (req, res) => {
   try {
     const task = await Task.create({ ...req.body, createdBy: req?.user_id });
-    return res.status(201).json(task);
+    return res.status(201).send({ success: true, message: task });
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -37,7 +37,7 @@ const getTasks = async (req, res) => {
       .skip((pageNumber - 1) * limitNumber)
       .limit(limitNumber);
     if (!tasks?.length) {
-      res.status(500).send({
+      return res.status(500).send({
         success: false,
         message: "Task Not found",
       });
@@ -48,7 +48,7 @@ const getTasks = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({
+    return res.status(500).send({
       success: false,
       message: "Error in Get Tasks API",
       error,

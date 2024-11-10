@@ -5,10 +5,13 @@ import "./login.scss";
 import * as EmailValidator from "email-validator";
 import loginImage from "../../../assets/login.svg";
 import axios from "axios";
+import { useNavigate } from "react-router";
+import { generateTaskPattern, taskPattern } from "../../../Routes";
 
 const { Title } = Typography;
 const Login = ({ setUserStep }) => {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
     try {
@@ -17,10 +20,10 @@ const Login = ({ setUserStep }) => {
         `${process.env.REACT_APP_API_URL}user/login`,
         payload
       );
-      console.log("response: ", response?.data);
       if (response?.data?.success) {
         message.success(response?.data?.message);
         localStorage.setItem("token", response?.data?.token);
+        navigate(taskPattern);
       } else {
         message.error(response?.data?.message);
       }
