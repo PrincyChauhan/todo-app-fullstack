@@ -17,7 +17,25 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({ createdBy: req?.user_id });
+    const {
+      page = 1,
+      limit = 10,
+      sort = "updatedAt",
+      order = "DESC",
+    } = req.body;
+
+    const pageNumber = parseInt(page, 10);
+    const limitNumber = parseInt(limit, 10);
+    const sortOrder = order === "DESC" ? -1 : 1;
+
+    const query = { createdBy: req.user_id };
+
+    const totalTasks = await Task.countDocuments(query);
+
+    const tasks = await Task.find(query)
+      .sort({ [sort]: sortOrder })
+      .skip((pageNumber - 1) * limitNumber)
+      .limit(limitNumber);
     if (!tasks?.length) {
       res.status(500).send({
         success: false,
@@ -26,7 +44,7 @@ const getTasks = async (req, res) => {
     }
     return res.status(200).send({
       success: true,
-      tasks,
+      data: { count: totalTasks, tasks },
     });
   } catch (error) {
     console.log(error);
